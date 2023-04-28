@@ -151,7 +151,7 @@ def get_optimal_threshold_strategy(metrics_df):
 
 class Threshold:
     def __init__(self, thresholds_path=None):
-        self.__thresholds = pd.DataFrame(columns=threshold_columns)
+        self.__thresholds = pd.DataFrame(columns=list(threshold_columns))
         if thresholds_path is not None:
             self.__thresholds_path = thresholds_path + 'LOOC_thresholds.csv'
         else:
