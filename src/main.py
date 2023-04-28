@@ -17,9 +17,9 @@ BASE_PATH = '../LIME/'
 
 
 def main(args):
-    constituents = pd.read_csv(BASE_PATH + 'data/constituents_sp500.csv')
+    constituents = pd.read_csv(BASE_PATH + 'data/nifty50.csv', usecols=['Ticker', 'Sector'])
     # constituents = constituents.groupby(by=['Sector']).nth(set(range(0, 10, 1))).reset_index()
-    constituents = constituents[constituents['Sector'].isin(['Communication Services'])].iloc[:3]
+    constituents = constituents[constituents['Sector'].isin(['BANKING', 'FINANCE'])]
     # constituents = constituents[constituents['Ticker']=='ABBV']
     # tickers = set(tickers) | set(['ICE'])
     # tickers = ['UG.PA', 'CPG', 'FP.PA',
@@ -113,8 +113,14 @@ def main(args):
 
                     metrics_all = metrics_all.append(pd.DataFrame(merged_series).T, ignore_index=True)
                     removed_columns_df = add_removed_columns(removed_columns_df, importance, context)
-                    removed_columns_df.to_csv(removed_columns_output_path, index=False)
-                    metrics_all.to_csv(all_metrics_output_path, index=False)
+                    if idx == 0:  # Assuming idx is your walk index
+                        removed_columns_df.to_csv(removed_columns_output_path, index=False, mode='w')
+                        metrics_all.to_csv(all_metrics_output_path, index=False, mode='w')
+                    else:
+                        removed_columns_df.to_csv(removed_columns_output_path, index=False, mode='a', header=False)
+                        metrics_all.to_csv(all_metrics_output_path, index=False, mode='a', header=False)
+                    # removed_columns_df.to_csv(removed_columns_output_path, index=False)
+                    # metrics_all.to_csv(all_metrics_output_path, index=False)
 
             end_time = time.perf_counter()
             print_info('{0} took {1} s'.format(ticker, end_time - start_time))
@@ -197,7 +203,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--method',
                         choices=['mdi', 'sp', 'pi', 'pi_wd'],
-                        default='pi',
+                        default='pi_wd',
                         type=str)
 
     parser.add_argument('--model_type',
