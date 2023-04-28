@@ -8,7 +8,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 company_model_parameters = dict(rf=dict(cr=dict(n_estimators=500, min_samples_leaf=5, max_features=1, oob_score=True),
                                         cr_ti=dict(n_estimators=120, max_features=0.5, max_depth=20, oob_score=True, bootstrap=True,
-                                                   criterion='mse'),
+                                                   criterion='squared_error'),
                                         ti=dict(n_estimators=150, max_depth=12, max_features=1, oob_score=True)),
                                 svr=dict(cr=dict(max_iter=1e6, C=10, tol=1e-5, epsilon=1e-5, gamma=9e-3
                                                  # max_iter=1e6, C=0.005, tol=1e-3, epsilon=0.002
